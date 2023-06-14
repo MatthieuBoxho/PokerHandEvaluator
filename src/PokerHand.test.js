@@ -7,6 +7,7 @@ const onePair = new PokerHand("AS AD KH 8D QS");
 const twoPairs = new PokerHand("AS AD KH KD QS");
 const threeOfAKind = new PokerHand("AS AD AH 8D QS");
 const straight = new PokerHand("AS KS QH JD TS");
+const lowStraight = new PokerHand("AS 2S 3H 4D 5S");
 const flush = new PokerHand("AS 3S KS 8S QS");
 const fullHouse = new PokerHand("AS AD AH QD QS");
 const fourOfAKind = new PokerHand("AS AD AC AH QS");
@@ -23,6 +24,7 @@ test("The faces are correctly extracted and ordered", () => {
 test("isStraight is correctly set", () => {
   expect(hand.isStraight).toBeFalsy();
   expect(straight.isStraight).toBeTruthy();
+  expect(lowStraight.isStraight).toBeTruthy();
   expect(straightFlush.isStraight).toBeTruthy();
 })
 
@@ -38,6 +40,7 @@ test("Rank is set correctly", () => {
   expect(twoPairs.rank).toBe(7);
   expect(threeOfAKind.rank).toBe(6);
   expect(straight.rank).toBe(5);
+  expect(lowStraight.rank).toBe(5);
   expect(flush.rank).toBe(4);
   expect(fullHouse.rank).toBe(3);
   expect(fourOfAKind.rank).toBe(2);
@@ -46,6 +49,8 @@ test("Rank is set correctly", () => {
 
 test("compareWith returns the result correctly", () => {
     expect(onePair.compareWith(highCard)).toBe(1);
+    expect(lowStraight.compareWith(onePair)).toBe(1);
+    expect(lowStraight.compareWith(straight)).toBe(2);
     expect(fullHouse.compareWith(fourOfAKind)).toBe(2);
 
     const sameValueTwoPairs = new PokerHand("AH AC KC KH QD");

@@ -37,8 +37,16 @@ PokerHand.prototype.isHandAFlush = function () {
 // It gets transformed into ['I', 'J', 'K', 'L', 'M'] by getOrderedFaces
 // We check if every transformed face char code is equal to the first face char code + the current position
 PokerHand.prototype.isHandAStraight = function () {
-  const first = this.faces[0].charCodeAt(0)
-  return this.faces.every((f, index) => first + index === f.charCodeAt(0));
+  // To handle the low straight case, we need to identify if the hand faces are A, 2, 3, 4, 5 and then transform the Ace in a differrent value
+  const lowStraight = this.faces.join("") === "AJKLM";
+  if (lowStraight) {
+    this.faces[0] = "N";
+  }
+  const first = this.faces[0].charCodeAt(0);
+  return (
+    lowStraight ||
+    this.faces.every((f, index) => first + index === f.charCodeAt(0))
+  );
 }
 
 // We create a dictonnary to count each occurence of every face in the hand
